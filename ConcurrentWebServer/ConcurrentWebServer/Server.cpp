@@ -2,10 +2,13 @@
 #include "Server.h"
 #include <iostream>
 
-Server::Server(const std::string& address, int port)
+Server::Server(const std::string& address, int port, int threadsCount)
     : address(address)
     , port(port)
-{}
+    , threadsCount(threadsCount)
+    , threadPool(threadsCount)
+{
+}
 
 void Server::start() {
 
@@ -62,7 +65,7 @@ void Server::acceptConections() {
         }
 
         // Handle client
-        Server::handleClient(clientSocket);
+        threadPool.enqueue([this, clientSocket] {handleClient(clientSocket); });
     }
 }
 
