@@ -1,5 +1,145 @@
-# Prerequisites
-*.d
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Uncomment if you have tasks that create the project's static files in wwwroot
+#wwwroot/
+
+# Uncomment if you have tasks that create the project's static files in client app
+#ClientApp/build/
+#ClientApp/node_modules/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# VS Code directories
+.vscode/
+.vscode/*
+
+# User-specific files (VS Code)
+*.code-workspace
+
+# User-specific files (Codeblocks)
+*.layout
+
+# Rider
+.idea/
+
+# Rider Project files
+*.idea/
+
+# Azure DevOps
+*.coverage
+
+# DotNetTool
+.dotnet_tool
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code settings directory
+.vscode/
+
+# Mono auto generated files
+mono_crash.*
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# JetBrains Rider
+.idea/
+
+# Rider Project files
+*.idea/
+
+# Project-specific caches
+.vs/
+.vs/*
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+
+# Build results
+[Bb]uild/
+[Bb]uilds/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# JetBrains Rider
+.idea/
+
+# Rider Project files
+*.idea/
+
+# CMake
+[Cc][Mm]ake[Cc]ache.txt
+[Cc][Mm]ake[Cc]ache.txt.user
+[Cc]MakeFiles/
+[Cc]MakeFiles/
+[Cc]MakeScripts/
+[Cc]MakeScripts/
+Testing/
+Makefile
+Makefile
+cmake_install.cmake
+cmake_install.cmake
+_deps/
+
+# Qt files
+*.moc
+*.qrc
+*.cpp
 
 # Compiled Object files
 *.slo
@@ -30,3 +170,64 @@
 *.exe
 *.out
 *.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.dSYM/*
+*.su
+
+# Kernel Module Compile Results
+*.mod.o
+*.mod.c
+*.symvers
+modules.order
+Module.symvers
+Module.markers
+
+# PureBasic
+*.pbp
+*.pbpb
+*.pbp~
+*.pbpb~
+
+# Backup files
+*_backup.c
+*_backup.cpp
+
+# Output of the "dist" process
+dist/
+
+# OCaml
+*.cmo
+*.cma
+*.cmx
+*.cmxa
+*.cmxs
+*.cmi
+*.a
+*.lib
+*.obj
+*.o
+*.cmi
+*.exe
+*.cmti
+*.annot
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS additional metadata files
+._*
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
