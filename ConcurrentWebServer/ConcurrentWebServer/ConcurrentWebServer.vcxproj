@@ -128,10 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RequestHandler.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RequestHandler.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="ThreadPool.h" />
   </ItemGroup>

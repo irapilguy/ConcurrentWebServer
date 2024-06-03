@@ -4,6 +4,7 @@
 #pragma comment(lib, "ws2_32.lib") // Link with the Winsock library
 
 #include "ThreadPool.h"
+#include "RequestHandler.h"
 
 class Server {
 public:
@@ -17,8 +18,10 @@ private:
     int port;
     SOCKET serverSocket;
     int threadsCount;
-
+    
     ThreadPool threadPool;
+    RequestHandler requestHandler;
+
     void acceptConections();
     void handleClient(SOCKET clientSocket);
 };

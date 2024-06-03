@@ -70,22 +70,7 @@ void Server::acceptConections() {
 }
 
 void Server::handleClient(SOCKET clientSocket) {
-    const int bufferSize = 1024;
-    char buffer[bufferSize];
-    int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
-    if (bytesReceived == SOCKET_ERROR) {
-        std::cerr << "recv() failed\n";
-    }
-    else if (bytesReceived == 0) {
-        std::cout << "Client disconnected\n";
-    }
-    else {
-        std::cout << "Received message from client: " << std::string(buffer, bytesReceived) << std::endl;
-        // Respond to client
-        const char* response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<h1>Hello, World!</h1>";
-        send(clientSocket, response, static_cast<int>(strlen(response)), 0);
-    }
-
+    requestHandler.handleRequest(clientSocket);
     // Close socket
     closesocket(clientSocket);
 }
