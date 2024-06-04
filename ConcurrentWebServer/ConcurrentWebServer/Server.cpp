@@ -10,6 +10,33 @@ Server::Server(const std::string& address, int port, int threadsCount)
 {
 }
 
+Server::~Server()
+{
+    stop();
+}
+
+SOCKET duplicateSocket(const SOCKET& srcSock) {
+    WSAPROTOCOL_INFO info;
+    SOCKET duplicateSock = INVALID_SOCKET;
+    if (WSADuplicateSocket(srcSock, GetCurrentProcessId(), &info) == 0) {
+        duplicateSock = WSASocket(info.iAddressFamily, info.iSocketType, info.iProtocol, &info, 0, 0);
+    }
+    return duplicateSock;
+}
+
+Server::Server(const Server& other) 
+    : serverSocket(INVALID_SOCKET)
+    , threadPool(other.threadsCount)
+    , threadsCount(other.threadsCount)
+    , address(other.address)
+    , port(other.port)
+{
+    serverSocket = duplicateSocket(other.serverSocket);
+    if (serverSocket == INVALID_SOCKET) {
+        std::cerr << "Socket duplication failed with error: " << WSAGetLastError() << "\n";
+    }
+}
+
 void Server::start() {
 
     WSADATA wsaData;
@@ -77,4 +104,5 @@ void Server::handleClient(SOCKET clientSocket) {
 
 void Server::stop() {
     closesocket(serverSocket);
+    WSACleanup();
 }

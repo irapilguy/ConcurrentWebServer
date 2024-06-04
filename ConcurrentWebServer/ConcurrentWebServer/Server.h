@@ -9,6 +9,9 @@
 class Server {
 public:
     Server(const std::string& address, int post, int threadsCount);
+    ~Server();
+
+    Server(const Server& other);
 
     void start();
     void stop();
