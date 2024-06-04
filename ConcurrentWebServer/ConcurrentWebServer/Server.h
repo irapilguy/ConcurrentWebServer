@@ -1,10 +1,11 @@
 #pragma once
-#include <winsock2.h>
+
 #include <string>
-#pragma comment(lib, "ws2_32.lib") // Link with the Winsock library
 
 #include "ThreadPool.h"
 #include "RequestHandler.h"
+
+typedef unsigned long long SOCKET;
 
 class Server {
 public:

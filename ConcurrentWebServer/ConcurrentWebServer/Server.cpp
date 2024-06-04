@@ -1,6 +1,9 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "Server.h"
+
 #include <iostream>
+#include <winsock2.h>
+#pragma comment(lib, "ws2_32.lib") // Link with the Winsock library
 
 Server::Server(const std::string& address, int port, int threadsCount)
     : address(address)
