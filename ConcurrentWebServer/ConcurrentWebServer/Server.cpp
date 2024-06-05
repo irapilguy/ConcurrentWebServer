@@ -1,5 +1,6 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "Server.h"
+#include "SocketUtils.h"
 
 #include <iostream>
 #include <winsock2.h>
@@ -18,15 +19,6 @@ Server::~Server()
     stop();
 }
 
-SOCKET duplicateSocket(const SOCKET& srcSock) {
-    WSAPROTOCOL_INFO info;
-    SOCKET duplicateSock = INVALID_SOCKET;
-    if (WSADuplicateSocket(srcSock, GetCurrentProcessId(), &info) == 0) {
-        duplicateSock = WSASocket(info.iAddressFamily, info.iSocketType, info.iProtocol, &info, 0, 0);
-    }
-    return duplicateSock;
-}
-
 Server::Server(const Server& other) 
     : serverSocket(INVALID_SOCKET)
     , threadPool(other.threadsCount)
@@ -34,7 +26,7 @@ Server::Server(const Server& other)
     , address(other.address)
     , port(other.port)
 {
-    serverSocket = duplicateSocket(other.serverSocket);
+    serverSocket = SocketUtils::duplicateSocket(other.serverSocket);
     if (serverSocket == INVALID_SOCKET) {
         std::cerr << "Socket duplication failed with error: " << WSAGetLastError() << "\n";
     }
@@ -88,7 +80,7 @@ void Server::acceptConections() {
         int clientAddrSize = sizeof(clientAddr);
         SOCKET clientSocket = accept(serverSocket, reinterpret_cast<sockaddr*>(&clientAddr), &clientAddrSize);
         if (clientSocket == INVALID_SOCKET) {
-            std::cerr << "Accept failed\n";
+            std::cerr << "Accept failed: " << WSAGetLastError() << "\n";
             closesocket(serverSocket);
             WSACleanup();
             return;
@@ -106,6 +98,8 @@ void Server::handleClient(SOCKET clientSocket) {
 }
 
 void Server::stop() {
-    closesocket(serverSocket);
-    WSACleanup();
+    if (serverSocket != INVALID_SOCKET) {
+        closesocket(serverSocket);
+        WSACleanup();
+    }
 }
