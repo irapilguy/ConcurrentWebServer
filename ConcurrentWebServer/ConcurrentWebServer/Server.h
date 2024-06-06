@@ -22,9 +22,13 @@ private:
     int port;
     SOCKET serverSocket;
     int threadsCount;
+
+    std::mutex acceptMutex;
     
     ThreadPool threadPool;
     RequestHandler requestHandler;
+
+    volatile bool serverRunning;
 
     void acceptConections();
     void handleClient(SOCKET clientSocket);

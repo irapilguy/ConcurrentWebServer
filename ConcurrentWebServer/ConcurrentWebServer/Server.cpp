@@ -11,6 +11,7 @@ Server::Server(const std::string& address, int port, int threadsCount)
     , port(port)
     , threadsCount(threadsCount)
     , threadPool(threadsCount)
+    , serverRunning(false)
 {
 }
 
@@ -25,6 +26,7 @@ Server::Server(const Server& other)
     , threadsCount(other.threadsCount)
     , address(other.address)
     , port(other.port)
+    , serverRunning(other.serverRunning)
 {
     serverSocket = SocketUtils::duplicateSocket(other.serverSocket);
     if (serverSocket == INVALID_SOCKET) {
@@ -68,6 +70,7 @@ void Server::start() {
         return;
     }
 
+    serverRunning = true;
     std::cout << "Server started, listening on port " << port << std::endl;
 
     acceptConections();
@@ -75,15 +78,21 @@ void Server::start() {
 
 void Server::acceptConections() {
     // Accept incoming connections
-    while (true) {
+    while (serverRunning) {
         sockaddr_in clientAddr;
         int clientAddrSize = sizeof(clientAddr);
+
+        std::lock_guard<std::mutex> lock(acceptMutex);
         SOCKET clientSocket = accept(serverSocket, reinterpret_cast<sockaddr*>(&clientAddr), &clientAddrSize);
         if (clientSocket == INVALID_SOCKET) {
-            std::cerr << "Accept failed: " << WSAGetLastError() << "\n";
-            closesocket(serverSocket);
-            WSACleanup();
-            return;
+            int error = WSAGetLastError();
+            if (error == WSAEINTR || error == WSAECONNABORTED) {
+                // Accept was interrupted or socket was closed
+                break;
+            }
+            else {
+                std::cerr << "Accept failed: " << error << "\n";
+            }
         }
 
         // Handle client
@@ -98,8 +107,10 @@ void Server::handleClient(SOCKET clientSocket) {
 }
 
 void Server::stop() {
+    serverRunning = false;
     if (serverSocket != INVALID_SOCKET) {
         closesocket(serverSocket);
-        WSACleanup();
+        serverSocket = INVALID_SOCKET;
     }
+    WSACleanup();
 }
