@@ -17,6 +17,13 @@ public:
     void start();
     void stop();
 
+
+public:
+    bool IsRunning() const;
+
+    std::mutex serverMutex;
+    std::condition_variable serverCV;
+
 private:
     std::string address;
     int port;

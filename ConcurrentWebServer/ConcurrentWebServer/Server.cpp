@@ -70,7 +70,11 @@ void Server::start() {
         return;
     }
 
-    serverRunning = true;
+    {
+        std::lock_guard<std::mutex> lock(serverMutex);
+        serverRunning = true;
+        serverCV.notify_one();
+    }
     std::cout << "Server started, listening on port " << port << std::endl;
 
     acceptConections();
@@ -92,6 +96,7 @@ void Server::acceptConections() {
             }
             else {
                 std::cerr << "Accept failed: " << error << "\n";
+                return;
             }
         }
 
@@ -113,4 +118,9 @@ void Server::stop() {
         serverSocket = INVALID_SOCKET;
     }
     WSACleanup();
+}
+
+bool Server::IsRunning() const
+{
+    return serverRunning;
 }

@@ -9,11 +9,10 @@ int main()
     int port = 8080;
     Server server(serverAddress, port, std::thread::hardware_concurrency() - 1);
 
-    //server.start();
-   std::thread serverThread([&server] { server.start(); });
+    std::thread serverThread([&server] { server.start(); });
 
-    // Give the server a moment to start up
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::unique_lock<std::mutex> lock(server.serverMutex);
+    server.serverCV.wait(lock, [&server] {return server.IsRunning(); });
 
     Client client(serverAddress, port);
     if (client.connectToServer()) {
