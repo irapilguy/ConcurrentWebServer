@@ -15,8 +15,8 @@ TEST(ServerTest, BasicRequest) {
     Server server(serverAddress, port, std::thread::hardware_concurrency());
     std::thread testServerThread([&server] { server.start(); });
 
-    // Give the server a moment to start up
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::unique_lock<std::mutex> lock(server.serverMutex);
+    server.serverCV.wait(lock, [&server] {return server.IsRunning(); });
 
     Client client(serverAddress, port);
 
